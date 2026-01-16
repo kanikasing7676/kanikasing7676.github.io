@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IONOS Premium Journey - Single Search Updated</title>
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --ionos-blue: #003d8f;
+            --ionos-dark-blue: #002966;
+            --ionos-light-blue: #00b0f0; 
+            --text-main: #1f2d3d;
+            --bg-gray: #f9fbfc;
+            --border-color: #dbe2e8;
+            --price-color: #1a1a1a;
+            /* Tag Variables */
+            --tag-bg: #f4f4f4;
+            --tag-text: #555;
+            --tag-hover: #e0e0e0;
+            --tag-active-bg: #e6f2ff;
+            --tag-active-border: #003d8f;
+            --tag-active-text: #003d8f;
+            --tag-label-bg: #e6f2ff; 
+            --tag-label-text: #003d8f;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-gray);
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .hidden { display: none !important; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        
+        /* --- HEADER --- */
+        header {
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; }
+        .logo { 
+            font-size: 26px; font-weight: 800; color: var(--ionos-blue); letter-spacing: -0.5px; 
+            cursor: pointer;
+        }
+        .nav-links span { margin-left: 25px; cursor: pointer; font-size: 14px; color: var(--text-main); font-weight: 500;}
+        .icon-cart { font-size: 22px; cursor: pointer; position: relative; }
+        .badge {
+            background-color: #cc0000; color: white; font-size: 10px; font-weight: bold;
+            padding: 2px 5px; border-radius: 50%; position: absolute; top: -5px; right: -8px;
+        }
+
+        /* --- VIEW 1: HERO --- */
+        #view-home {
+            background: linear-gradient(180deg, var(--ionos-blue) 0%, var(--ionos-dark-blue) 100%);
+            color: white;
+            padding: 80px 0 120px;
+            text-align: center;
+        }
+        .hero-content h1 { font-size: 42px; margin-bottom: 30px; font-weight: 300; }
+        .search-wrapper {
+            background: white;
+            padding: 6px;
+            border-radius: 4px;
+            display: inline-flex;
+            width: 100%;
+            max-width: 750px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .search-wrapper input {
+            border: none; flex-grow: 1; padding: 15px; font-size: 18px; outline: none; color: #333;
+        }
+        .search-wrapper button {
+            background-color: var(--ionos-light-blue);
+            border: none; padding: 0 45px; font-size: 18px; font-weight: 700; color: white; cursor: pointer; border-radius: 2px;
+        }
+
+        /* --- VIEW 2: SEARCH RESULTS --- */
+        #view-results { padding: 30px 0 60px; }
+        
+        .result-message {
+            font-size: 24px; color: #333; margin-bottom: 20px; display: flex; align-items: center;
+        }
+        .check-green { color: #28a745; margin-right: 10px; font-weight: bold; }
+
+        /* --- PREMIUM CARD --- */
+        .result-card {
+            background: white;
+            border: 2px solid var(--ionos-blue);
+            border-radius: 4px;
+            padding: 25px 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; 
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .badge-premium {
+            background-color: var(--ionos-blue); color: white;
+            font-size: 11px; font-weight: 700; padding: 4px 10px;
+            position: absolute; top: 0; left: 0; border-bottom-right-radius: 4px;
+        }
+        
+        /* Domain Info */
+        .domain-info { max-width: 55%; }
+        .domain-name { font-size: 24px; font-weight: 700; color: #333; display: block; }
+        
+        /* --- CLICKABLE TAG SYSTEM --- */
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+            margin-bottom: 5px; 
+        }
+        
+        /* Clickable Tag Style */
+        .tag-pill {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-weight: 600;
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            border: 1px solid #e0e0e0;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .tag-pill:hover {
+            background-color: var(--tag-hover);
+            border-color: #ccc;
+            color: #333;
+        }
+        
+        /* Active State for Tag */
+        .tag-pill.active {
+            background-color: var(--tag-active-bg);
+            border-color: var(--tag-active-border);
+            color: var(--tag-active-text);
+        }
+
+        /* Label Tag */
+        .tag-label {
+            background-color: var(--tag-label-bg);
+            color: var(--tag-label-text);
+            font-weight: 700;
+            border-color: #cce0ff;
+            cursor: default;
+        }
+
+        /* --- CONTENT BOX UNDER TAGS --- */
+        .tag-info-display {
+            background: #f1f8ff;
+            border: 1px solid #cce0ff;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #333;
+            display: none; 
+            position: relative;
+        }
+        .tag-info-display::before {
+            content: "";
+            position: absolute;
+            top: -6px;
+            left: 20px; 
+            width: 10px;
+            height: 10px;
+            background: #f1f8ff;
+            border-left: 1px solid #cce0ff;
+            border-top: 1px solid #cce0ff;
+            transform: rotate(45deg);
+        }
+
+        /* --- DROPDOWN STYLE --- */
+        .requirements-dropdown {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .requirements-dropdown summary {
+            color: #005ea8;
+            cursor: pointer;
+            font-weight: 400;
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+        .requirements-dropdown summary::before {
+            content: "";
+            border: solid #005ea8;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(45deg); 
+            margin-right: 8px;
+            margin-bottom: 2px;
+            transition: 0.2s;
+        }
+        .requirements-dropdown[open] summary::before {
+            transform: rotate(-135deg); 
+            margin-bottom: -2px;
+        }
+        .req-content {
+            margin-top: 8px;
+            padding-left: 0;
+            color: #333;
+            font-size: 13px;
+            line-height: 1.4;
+            background: #fdfdfd;
+            border-left: 2px solid #ddd;
+            padding: 8px 12px;
+        }
+
+        /* Pricing Block */
+        .pricing-block {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            text-align: right;
+            padding-top: 10px;
+        }
+
+        .price-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .uniform-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--price-color);
+            line-height: 1.2;
+        }
+
+        .price-label { font-size: 12px; color: #666; margin-bottom: 2px; }
+        .price-sub { font-size: 12px; color: #666; }
+
+        .info-icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #eee;
+            color: var(--ionos-blue);
+            font-size: 11px;
+            font-weight: bold;
+            font-family: serif;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            margin-left: 5px;
+            position: relative;
+        }
+        
+        /* UPDATED TOOLTIP CSS FOR LONGER TEXT */
+        .info-icon-wrapper:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: sans-serif;
+            font-size: 11px;
+            line-height: 1.4;
+            width: 300px; /* Wider for long text */
+            text-align: left;
+            font-weight: normal;
+            z-index: 10;
+            pointer-events: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-add {
+            background-color: var(--ionos-light-blue);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background 0.2s;
+        }
+        .btn-add:hover { background-color: #009ecc; }
+
+        /* --- RECOMMENDATIONS & FAQ --- */
+        .rec-section { margin-bottom: 40px; }
+        .rec-card {
+            background: white; border-bottom: 1px solid #eee; padding: 20px 0;
+            display: flex; justify-content: space-between; align-items: flex-start;
+        }
+        
+        .rec-tag-container { display: flex; gap: 5px; margin-top: 5px; flex-wrap: wrap; }
+        
+        .rec-tag-pill {
+            font-size: 10px; padding: 2px 8px; background: #eee; border-radius: 3px; color: #555;
+            cursor: pointer; text-decoration: none; border: 1px solid transparent;
+        }
+        .rec-tag-pill:hover {
+            background: #e0e0e0; border-color: #ccc;
+        }
+        .rec-tag-pill.active {
+            background: #e6f2ff; border-color: #003d8f; color: #003d8f;
+        }
+
+        .rec-badge-aftermarket { 
+            background: #fff3cd; color: #856404; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 2px;
+        }
+        .rec-badge-std { 
+            background: #d4edda; color: #155724; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 2px;
+        }
+
+        .edu-section {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        .edu-header { font-weight: 700; font-size: 16px; color: var(--ionos-blue); margin-bottom: 15px; }
+        
+        .faq-details {
+            background: white; border: 1px solid #eee; border-radius: 4px; margin-bottom: 10px; padding: 10px 15px;
+            cursor: pointer;
+        }
+        .faq-details[open] { border-left: 4px solid var(--ionos-blue); }
+        .faq-summary { font-weight: 600; outline: none; list-style: none; display: flex; justify-content: space-between; }
+        .faq-summary::after { content: "+"; color: var(--ionos-blue); font-weight: bold; }
+        .faq-details[open] .faq-summary::after { content: "-"; }
+        .faq-text { margin-top: 10px; font-size: 14px; color: #555; line-height: 1.5; }
+        .tld-list { font-weight: bold; color: #333; background: #eee; padding: 2px 5px; border-radius: 3px; }
+
+        /* --- CART VIEW --- */
+        #view-cart { padding: 40px 0; }
+        .cart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .cart-box { background: white; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+        .cart-item { padding: 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .cart-price-unified { font-size: 18px; font-weight: 700; color: #333; } 
+        .info-box {
+            background: #e7f5ff; border-left: 3px solid var(--ionos-light-blue);
+            font-size: 12px; color: #004085; padding: 8px; margin-top: 5px; display: inline-block; max-width: 350px;
+        }
+        .summary-card { background: white; padding: 25px; border: 1px solid #ddd; border-radius: 4px; height: fit-content; }
+        .btn-checkout {
+            background-color: var(--ionos-light-blue); width: 100%; border: none; padding: 15px;
+            color: white; font-weight: 700; font-size: 16px; border-radius: 30px; cursor: pointer; margin-top: 20px;
+        }
+        .terms-link { font-size: 11px; color: #666; display: block; text-align: center; margin-top: 15px; text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-inner">
+            <div class="logo" onclick="location.reload()">IONOS</div>
+            <div class="nav-links">
+                <span>Domains & SSL</span>
+                <span>Websites</span>
+                <span>Hosting</span>
+                <span>Email</span>
+            </div>
+            <div class="icon-cart" onclick="goToCart()">
+                🛒 <span id="cart-badge" class="badge hidden">1</span>
+            </div>
+        </div>
+    </header>
+
+    <div id="view-home">
+        <div class="container">
+            <p style="text-transform: uppercase; font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px;">Premium Domain Names</p>
+            <h1>Give your next big idea the perfect address</h1>
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" value="travel-deals.shop" placeholder="Find your domain now">
+                <button onclick="doSearch()">Check</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-results" class="hidden">
+        <div class="container">
+            <div style="margin-bottom: 20px;">
+                <a href="#" onclick="location.reload()" style="color:#666; text-decoration:none; font-size:14px;">&larr; Start new search</a>
+            </div>
+
+            <div class="result-message">
+                <span class="check-green">✔</span> Good news! This domain is available.
+            </div>
+
+            <div class="result-card">
+                <div class="badge-premium">PREMIUM REGISTRY DOMAIN</div>
+                
+                <div class="domain-info">
+                    <span class="domain-name" id="resultName">travel-deals.shop</span>
+                    
+                    <div class="tag-container" id="main-tags">
+                        <span class="tag-pill tag-label">★ Why it's premium:</span>
+                        <span class="tag-pill" onclick="toggleTag(this, 'main-info', 'High search volume keywords like \'travel\' and \'deals\' can significantly lower your CPC costs and improve organic ranking.')">High-value Industry Keyword</span>
+                        <span class="tag-pill" onclick="toggleTag(this, 'main-info', 'Concise names are 30% more likely to be remembered after a single impression.')">Short & Memorable</span>
+                        <span class="tag-pill" onclick="toggleTag(this, 'main-info', 'This name works for travel agencies, comparison sites, or blogs, offering flexibility for your business model.')">Broad Appeal</span>
+                    </div>
+
+                    <div id="main-info" class="tag-info-display">
+                        Select a tag above to see details.
+                    </div>
+
+                    <div style="font-size: 13px; color: #666;">
+                        Sold directly by the Registry • Standard Renewal
+                    </div>
+
+                    <details class="requirements-dropdown">
+                        <summary>Requirements for .shop premium domain</summary>
+                        <div class="req-content">
+                            Immediate payment required. Availability not guaranteed until transfer is complete. Premium fees are final and non-refundable.
+                        </div>
+                    </details>
+                </div>
+
+                <div class="pricing-block">
+                    <div class="price-group">
+                        <div class="price-label">
+                            One-time fee 
+                            <span class="info-icon-wrapper" data-tooltip="Premium domains include a one-time fee after which the regular renewal pricing applies. A separate invoice will be issued for this fee. Due to its high value, only one Premium Domain per order is allowed.">i</span>
+                        </div>
+                        <span class="uniform-price">399 €</span>
+                    </div>
+
+                    <div style="height: 40px; border-right: 1px solid #ddd;"></div>
+
+                    <div class="price-group">
+                        <div class="price-label">Standard Renewal</div>
+                        <span class="uniform-price">12 €</span>
+                        <span class="price-sub">/ year</span>
+                    </div>
+
+                    <button class="btn-add" onclick="addToCart()">Add to cart</button>
+                </div>
+            </div>
+
+            <div class="rec-section">
+                <h3 style="color:#333; margin-bottom:15px;">Other recommended options</h3>
+                
+                <div class="rec-card">
+                    <div style="max-width:60%;">
+                        <span class="rec-badge-aftermarket">AFTERMARKET / RESALE</span>
+                        <div style="font-weight:600; color:#333; font-size:16px; margin-top:2px;">travel-deals.com</div>
+                        
+                        <div class="rec-tag-container" id="rec1-tags">
+                            <span class="rec-tag-pill" style="background:#fff4e5; color:#b05500; cursor:default; border:none;">★ Why it's valuable:</span>
+                            <span class="rec-tag-pill" onclick="toggleTag(this, 'rec1-info', 'This domain has been registered for years. Search engines trust older domains more than brand new ones.')">Trusted Legacy Domain</span>
+                            <span class="rec-tag-pill" onclick="toggleTag(this, 'rec1-info', '.com domains retain their value better than any other extension, making this a safe digital asset.')">High Investment Value</span>
+                        </div>
+                        <div id="rec1-info" class="tag-info-display"></div>
+                    </div>
+
+                    <div style="text-align:right; min-width:150px;">
+                        <div style="font-weight:700; font-size:16px;">5,000 €</div>
+                        <div style="font-size:11px; color:#666;">Renews at 15 €/yr</div>
+                    </div>
+                    <button style="margin-left:20px; border:1px solid #ccc; background:white; padding:5px 15px; border-radius:20px; cursor:pointer;">Add</button>
+                </div>
+
+                <div class="rec-card">
+                    <div style="max-width:60%;">
+                        <span class="rec-badge-std">AVAILABLE</span>
+                        <div style="font-weight:600; color:#333; font-size:16px; margin-top:2px;">travel-deals.info</div>
+                        
+                        <div class="rec-tag-container" id="rec2-tags">
+                             <span class="rec-tag-pill" style="background:#e8f5e9; color:#155724; cursor:default; border:none;">★ Why it's great:</span>
+                            <span class="rec-tag-pill" onclick="toggleTag(this, 'rec2-info', 'A simple structure that is easy for customers to type directly into their browser.')">Easy to remember</span>
+                            <span class="rec-tag-pill" onclick="toggleTag(this, 'rec2-info', 'The lowest entry point price for this keyword combination.')">Best Price</span>
+                        </div>
+                        <div id="rec2-info" class="tag-info-display"></div>
+                    </div>
+
+                    <div style="text-align:right; min-width:150px;">
+                        <div style="font-weight:700; font-size:16px;">4 €</div>
+                        <div style="font-size:11px; color:#666;">/ year</div>
+                    </div>
+                    <button style="margin-left:20px; border:1px solid #ccc; background:white; padding:5px 15px; border-radius:20px; cursor:pointer;">Add</button>
+                </div>
+            </div>
+
+            <div class="edu-section">
+                <div class="edu-header">💡 Frequently Asked Questions</div>
+                
+                <details class="faq-details" open>
+                    <summary class="faq-summary">What is a Premium Registry Domain?</summary>
+                    <div class="faq-text">
+                        These are high-value domains sold directly by the domain registry. The initial price reflects the value of the name, but for specific extensions, you only pay standard rates for renewal.
+                    </div>
+                </details>
+
+                <details class="faq-details">
+                    <summary class="faq-summary">Which domains have Standard Renewal?</summary>
+                    <div class="faq-text">
+                        While the one-time fee is higher, the following extensions renew at the standard low price:<br><br>
+                        <span class="tld-list">.shop, .app, .online, .store, .dev, .tech</span>
+                    </div>
+                </details>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="view-cart" class="hidden">
+        <div class="container">
+            <h2 style="margin-bottom: 20px;">Your shopping cart</h2>
+            
+            <div class="cart-grid">
+                <div class="cart-box">
+                    
+                    <div class="cart-item">
+                        <div>
+                            <div style="font-weight: 700; font-size: 16px;" id="cartName">travel-deals.shop</div>
+                            <div style="font-size: 12px; color: #666;">1 year registration</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="text-decoration: line-through; color: #999; font-size: 12px;">15 €</div>
+                            <div class="cart-price-unified">12 €</div>
+                            <div style="font-size: 11px; color: #666;">renews at 12 €/yr</div>
+                        </div>
+                    </div>
+
+                    <div class="cart-item" style="background-color: #fafafa;">
+                        <div>
+                            <div style="font-weight: 700; font-size: 16px;">One-time Fee</div>
+                            <div class="info-box">
+                                ℹ️ Premium domains include a one-time fee after which the regular renewal pricing applies.
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 12px; color: #666; margin-bottom: 2px;">Pay once</div>
+                            <div class="cart-price-unified">399 €</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="flex justify-between" style="font-size: 14px; color: #28a745; margin-bottom: 10px;">
+                        Nice! You saved 3 € on your order.
+                    </div>
+                    <div class="flex justify-between align-center" style="margin-bottom: 20px;">
+                        <span style="font-size: 18px; font-weight: 600;">Subtotal</span>
+                        <span style="font-size: 24px; font-weight: 700;">411 €</span>
+                    </div>
+                    
+                    <button class="btn-checkout" onclick="alert('Proceeding to payment...')">Continue</button>
+                    
+                    <a href="https://www.ionos.com/terms-gtc/domain/terms-premium-domain/" target="_blank" class="terms-link">
+                        Read Premium Domain Terms & Conditions
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTag(element, contentId, text) {
+            var contentBox = document.getElementById(contentId);
+            
+            // If the clicked tag is already active, close it
+            if (element.classList.contains('active')) {
+                element.classList.remove('active');
+                contentBox.style.display = 'none';
+                return;
+            }
+
+            // Remove active class from all siblings
+            var siblings = element.parentNode.children;
+            for (var i = 0; i < siblings.length; i++) {
+                siblings[i].classList.remove('active');
+            }
+
+            // Set clicked tag to active
+            element.classList.add('active');
+
+            // Update content and show
+            contentBox.innerText = text;
+            contentBox.style.display = 'block';
+        }
+
+        function doSearch() {
+            var inputVal = document.getElementById('searchInput').value;
+            if(inputVal) {
+                document.getElementById('resultName').innerText = inputVal;
+                document.getElementById('cartName').innerText = inputVal;
+            }
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-results').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function addToCart() {
+            document.getElementById('cart-badge').classList.remove('hidden');
+            goToCart();
+        }
+
+        function goToCart() {
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-results').classList.add('hidden');
+            document.getElementById('view-cart').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
