@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IONOS Premium Domain Project - Final Corrected</title>
+    <style>
+        /* --- GLOBAL VARIABLES & RESET --- */
+        :root {
+            --ionos-blue: #003d8f;
+            --ionos-dark-blue: #002966;
+            --ionos-light-blue: #00b0f0; 
+            --text-main: #1f2d3d;
+            --bg-gray: #f9fbfc;
+            --border-color: #dbe2e8;
+            --price-color: #1a1a1a;
+            /* Tag Variables */
+            --tag-bg: #f4f4f4;
+            --tag-text: #555;
+            --tag-hover: #e0e0e0;
+            --tag-active-bg: #e6f2ff;
+            --tag-active-border: #003d8f;
+            --tag-active-text: #003d8f;
+            --tag-label-bg: #e6f2ff; 
+            --tag-label-text: #003d8f;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-gray);
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .hidden { display: none !important; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+
+        /* --- HEADER --- */
+        header {
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; }
+        .logo { 
+            font-size: 26px; font-weight: 800; color: var(--ionos-blue); letter-spacing: -0.5px; 
+            cursor: pointer; text-decoration: none;
+        }
+        .nav-links span { margin-left: 25px; cursor: pointer; font-size: 14px; color: var(--text-main); font-weight: 500;}
+        .icon-cart { font-size: 22px; cursor: pointer; position: relative; }
+        .badge {
+            background-color: #cc0000; color: white; font-size: 10px; font-weight: bold;
+            padding: 2px 5px; border-radius: 50%; position: absolute; top: -5px; right: -8px;
+        }
+
+        /* --- LANDING HUB STYLES --- */
+        #landing-hub {
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .hub-title { color: var(--ionos-blue); font-size: 32px; font-weight: 300; margin-bottom: 40px; }
+        .hub-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 800px; margin: 0 auto;
+        }
+        .hub-card {
+            background: white; padding: 40px; border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e0e0e0;
+            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+        .hub-card:hover {
+            transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: var(--ionos-light-blue);
+        }
+        .hub-card h2 { color: var(--ionos-dark-blue); margin-top: 0; }
+        .hub-card p { color: #666; margin-bottom: 25px; }
+        .hub-btn {
+            background: var(--ionos-light-blue); color: white; padding: 12px 25px;
+            border-radius: 4px; font-weight: 700; display: inline-block;
+        }
+
+        /* --- SHARED VIEW STYLES --- */
+        .hero-view {
+            background: linear-gradient(180deg, var(--ionos-blue) 0%, var(--ionos-dark-blue) 100%);
+            color: white; padding: 80px 0 120px; text-align: center;
+        }
+        .hero-content h1 { font-size: 42px; margin-bottom: 30px; font-weight: 300; }
+        .search-wrapper {
+            background: white; padding: 6px; border-radius: 4px; display: inline-flex;
+            width: 100%; max-width: 750px; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .search-wrapper input {
+            border: none; flex-grow: 1; padding: 15px; font-size: 18px; outline: none; color: #333;
+        }
+        .search-wrapper button {
+            background-color: var(--ionos-light-blue); border: none; padding: 0 45px;
+            font-size: 18px; font-weight: 700; color: white; cursor: pointer; border-radius: 2px;
+        }
+
+        .results-section { padding: 30px 0 60px; }
+        .result-message { font-size: 24px; color: #333; margin-bottom: 25px; display: flex; align-items: center; }
+        .check-green { color: #28a745; margin-right: 10px; font-weight: bold; }
+
+        /* --- CARD & GRID LAYOUTS --- */
+        .single-card-layout {
+            background: white; border: 2px solid var(--ionos-blue); border-radius: 4px;
+            padding: 25px 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 40px; position: relative;
+        }
+
+        .grid-layout-2col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 50px;
+        }
+        .grid-card {
+            background: white; border: 1px solid #ddd; border-radius: 6px; padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column;
+            justify-content: space-between; position: relative; transition: transform 0.2s;
+        }
+        .grid-card:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+        .grid-card.featured { border: 2px solid var(--ionos-blue); }
+
+        /* Common Elements */
+        .badge-premium { background-color: var(--ionos-blue); color: white; font-size: 11px; font-weight: 700; padding: 4px 10px; position: absolute; top: 0; left: 0; border-bottom-right-radius: 4px; }
+        .badge-aftermarket { background: #fff3cd; color: #856404; font-size: 10px; font-weight: 700; padding: 4px 10px; position: absolute; top: 0; left: 0; border-bottom-right-radius: 4px; display: inline-block; }
+        .domain-name { font-size: 24px; font-weight: 700; color: #333; display: block; margin-bottom: 5px; }
+
+        /* Tags */
+        .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; margin-bottom: 5px; }
+        .tag-pill {
+            font-size: 11px; padding: 4px 10px; border-radius: 3px; font-weight: 600;
+            background-color: var(--tag-bg); color: var(--tag-text); border: 1px solid #e0e0e0;
+            text-decoration: none; display: inline-block; cursor: pointer; transition: all 0.2s ease;
+        }
+        .tag-pill:hover { background-color: var(--tag-hover); border-color: #ccc; color: #333; }
+        .tag-pill.active { background-color: var(--tag-active-bg); border-color: var(--tag-active-border); color: var(--tag-active-text); }
+        .tag-label { background-color: var(--tag-label-bg); color: var(--tag-label-text); font-weight: 700; border-color: #cce0ff; cursor: default; }
+
+        .tag-info-display {
+            background: #f1f8ff; border: 1px solid #cce0ff; padding: 10px 15px; border-radius: 4px;
+            margin-top: 5px; margin-bottom: 15px; font-size: 13px; color: #333; display: none; position: relative;
+        }
+        .tag-info-display::before {
+            content: ""; position: absolute; top: -6px; left: 20px; width: 10px; height: 10px;
+            background: #f1f8ff; border-left: 1px solid #cce0ff; border-top: 1px solid #cce0ff; transform: rotate(45deg);
+        }
+
+        /* Dropdowns */
+        .requirements-dropdown, .card-dropdown { margin-top: 15px; font-size: 14px; border-top: 1px solid #f0f0f0; padding-top: 10px; }
+        .requirements-dropdown summary, .card-dropdown summary { cursor: pointer; color: #005ea8; list-style: none; display: flex; align-items: center; font-weight: 500; }
+        .requirements-dropdown summary::before, .card-dropdown summary::before { 
+            content: "›"; font-size: 18px; line-height: 10px; margin-right: 5px; font-weight: bold; transform: rotate(0deg); transition: 0.2s; 
+        }
+        .requirements-dropdown[open] summary::before, .card-dropdown[open] summary::before { transform: rotate(90deg); }
+        .req-content, .card-dropdown p { margin-top: 8px; padding-left: 10px; color: #555; font-size: 13px; line-height: 1.4; }
+
+        /* Pricing & Buttons */
+        .pricing-block { display: flex; align-items: center; gap: 30px; text-align: right; padding-top: 10px; }
+        .price-group { display: flex; flex-direction: column; align-items: flex-end; }
+        .uniform-price { font-size: 22px; font-weight: 700; color: var(--price-color); line-height: 1.2; }
+        .price-label { font-size: 12px; color: #666; margin-bottom: 2px; }
+        .price-sub { font-size: 12px; color: #666; }
+
+        .btn-add {
+            background-color: var(--ionos-light-blue); color: white; border: none; padding: 10px 30px;
+            border-radius: 30px; font-weight: 700; cursor: pointer; font-size: 15px; transition: background 0.2s;
+        }
+        .btn-add:hover { background-color: #009ecc; }
+        .btn-add.outline { background: white; border: 1px solid #ccc; color: #333; }
+        
+        /* Blue Label State */
+        .btn-add.added-state { background-color: var(--ionos-blue); cursor: default; pointer-events: none; }
+        .post-add-text { font-size: 11px; color: #666; text-align: center; margin-top: 8px; line-height: 1.3; display: none; }
+
+        /* Tooltip */
+        .info-icon-wrapper, .info-icon {
+            display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px;
+            border-radius: 50%; background-color: #eee; color: var(--ionos-blue); font-size: 11px;
+            font-weight: bold; font-family: serif; cursor: pointer; border: 1px solid #ccc; margin-left: 5px; position: relative;
+        }
+        .info-icon-wrapper:hover::after, .info-icon:hover::after {
+            content: attr(data-tooltip); position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
+            background: #4a545e; color: #fff; padding: 12px; border-radius: 4px; font-family: sans-serif;
+            font-size: 11px; line-height: 1.4; width: 300px; text-align: left; font-weight: normal; z-index: 999;
+            pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Cart */
+        .cart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .cart-box { background: white; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+        .cart-item { padding: 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: flex-start; }
+        .cart-price-unified { font-size: 18px; font-weight: 700; color: #333; } 
+        .summary-card { background: white; padding: 25px; border: 1px solid #ddd; border-radius: 4px; height: fit-content; }
+        .btn-checkout { background-color: var(--ionos-light-blue); width: 100%; border: none; padding: 15px; color: white; font-weight: 700; font-size: 16px; border-radius: 30px; cursor: pointer; margin-top: 20px; }
+        
+        /* CART BADGES */
+        .cart-badge-blue { background-color: #e6f2ff; color: #003d8f; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-left: 8px; vertical-align: middle; }
+        .cart-badge-yellow { background-color: #fff3cd; color: #856404; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-left: 8px; vertical-align: middle; }
+        
+        /* NEW BLUE INFO BOX (Cart) */
+        .fee-info-box {
+            background-color: #e6f2ff; color: #003d8f; font-size: 11px; padding: 8px 12px; 
+            border-radius: 4px; margin-top: 8px; line-height: 1.4; max-width: 320px; border: 1px solid #cce0ff;
+        }
+
+        /* Recommendations */
+        .rec-container { margin-top: 40px; border-top: 1px solid #eee; padding-top: 30px; }
+        .rec-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .rec-badge-std { background: #d4edda; color: #155724; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 2px; }
+        .rec-badge-aftermarket { background: #fff3cd; color: #856404; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 2px; }
+
+        /* Footer */
+        .faq-details { background: white; border: 1px solid #eee; border-radius: 4px; margin-bottom: 10px; padding: 10px 15px; cursor: pointer; }
+        .faq-details[open] { border-left: 4px solid var(--ionos-blue); }
+        .faq-summary { font-weight: 600; outline: none; list-style: none; display: flex; justify-content: space-between; }
+        .faq-summary::after { content: "+"; color: var(--ionos-blue); font-weight: bold; }
+        .faq-details[open] .faq-summary::after { content: "-"; }
+        .faq-text { margin-top: 10px; font-size: 14px; color: #555; line-height: 1.5; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-inner">
+            <div class="logo" onclick="goHome()">IONOS</div>
+            <div class="nav-links">
+                <span>Domains & SSL</span>
+                <span>Websites</span>
+                <span>Hosting</span>
+                <span>Email</span>
+            </div>
+            <div class="icon-cart">
+                🛒 <span id="master-cart-badge" class="badge hidden">1</span>
+            </div>
+        </div>
+    </header>
+
+
+    <div id="view-landing">
+        <div id="landing-hub">
+            <h1 class="hub-title">Select Premium Domain Scenario</h1>
+            <div class="hub-grid">
+                <div class="hub-card" onclick="startSingleApp()">
+                    <h2>Single Search Result</h2>
+                    <p>Scenario: User searches for a specific premium domain (e.g., <i>travel-deals.shop</i>). Shows detailed pricing, tags, and specific tooltip.</p>
+                    <span class="hub-btn">Launch Single View</span>
+                </div>
+
+                <div class="hub-card" onclick="startGenericApp()">
+                    <h2>Generic / Grid Search</h2>
+                    <p>Scenario: User searches for a term (e.g., <i>travel-deals</i>). Comparison view of Registry vs. Aftermarket options.</p>
+                    <span class="hub-btn">Launch Grid View</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="app-single" class="hidden">
+        
+        <div id="s-view-home" class="hero-view">
+            <div class="container">
+                <p style="text-transform: uppercase; font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px;">Premium Domain Names</p>
+                <h1>Give your next big idea the perfect address</h1>
+                <div class="search-wrapper">
+                    <input type="text" id="s-searchInput" value="travel-deals.shop" placeholder="Find your domain now">
+                    <button onclick="doSearchSingle()">Check</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="s-view-results" class="results-section hidden">
+            <div class="container">
+                <div style="margin-bottom: 20px;">
+                    <a href="#" onclick="goHome()" style="color:#666; text-decoration:none; font-size:14px;">&larr; Start new search</a>
+                </div>
+
+                <div class="result-message"><span class="check-green">✔</span> Good news! This domain is available.</div>
+
+                <div class="single-card-layout">
+                    <div class="badge-premium">PREMIUM REGISTRY DOMAIN</div>
+                    
+                    <div class="domain-info">
+                        <span class="domain-name" id="s-resultName">travel-deals.shop</span>
+                        
+                        <div class="tag-container">
+                            <span class="tag-pill tag-label">★ Why it's premium:</span>
+                            <span class="tag-pill" onclick="toggleTag(this, 's-main-info', 'High search volume keywords.')">High-value Industry Keyword</span>
+                            <span class="tag-pill" onclick="toggleTag(this, 's-main-info', 'Concise names are memorable.')">Short & Memorable</span>
+                            <span class="tag-pill" onclick="toggleTag(this, 's-main-info', 'Works for agencies or blogs.')">Broad Appeal</span>
+                        </div>
+                        <div id="s-main-info" class="tag-info-display">Select a tag above to see details.</div>
+
+                        <div style="font-size: 13px; color: #666;">Sold directly by the Registry • Standard Renewal</div>
+
+                        <details class="requirements-dropdown">
+                            <summary>More Information on Premium Domains</summary>
+                            <div class="req-content">
+                                Immediate payment required. Availability not guaranteed until transfer is complete. Premium fees are final and non-refundable.
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="pricing-block">
+                        <div class="price-group">
+                            <div class="price-label">
+                                One-time fee 
+                                <span class="info-icon-wrapper" data-tooltip="This Premium Domain includes a one-time fee, which we'll bill separately. After the 1st year, you'll pay the renewal price shown in your cart.">i</span>
+                            </div>
+                            <span class="uniform-price">399 €</span>
+                        </div>
+                        <div style="height: 40px; border-right: 1px solid #ddd;"></div>
+                        <div class="price-group">
+                            <div class="price-label">Standard Renewal</div>
+                            <span class="uniform-price">12 €</span>
+                            <span class="price-sub">/ year</span>
+                        </div>
+                        <div style="text-align:right;">
+                            <button id="s-btn1" class="btn-add" onclick="addToCartSingle('travel-deals.shop', 399, 12, 's-btn1', 's-txt1', 'premium')">Add to cart</button>
+                            <div id="s-txt1" class="post-add-text">Immediate payment required.<br>Fee is non-refundable.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rec-container">
+                    <h3>Other recommended options</h3>
+                    <div class="rec-row">
+                        <div><strong>travel-deals.info</strong><span style="font-size:12px; color:#666; margin-left:10px;">Standard</span></div>
+                        <div style="display:flex; align-items:center;">
+                            <span style="font-weight:bold; margin-right:20px;">4 € / year</span>
+                            <button class="btn-add outline" style="padding:5px 15px; border-radius:20px; font-size:13px;">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:40px; background:#f9f9f9; padding:20px; border-radius:5px;">
+                    <h4 style="margin-top:0;">Frequently Asked Questions</h4>
+                    <details class="faq-details" open><summary class="faq-summary">What is a Premium Registry Domain?</summary><div class="faq-text">These are high-value domains sold directly by the domain registry. The initial price reflects the value of the name, but for specific extensions, you only pay standard rates for renewal.</div></details>
+                </div>
+            </div>
+        </div>
+
+        <div id="s-view-cart" class="hidden" style="padding:40px 0;">
+            <div class="container">
+                <h2 style="margin-bottom: 20px;">Your shopping cart</h2>
+                <div class="cart-grid">
+                    <div class="cart-box">
+                        <div class="cart-item">
+                            <div>
+                                <div style="font-weight: 700; font-size: 16px;">
+                                    <span id="s-cartName">--</span> 
+                                    <span id="s-cartBadge" class="cart-badge-blue">PREMIUM REGISTRY</span>
+                                </div>
+                                <div style="font-size: 12px; color: #666;">1 year registration</div>
+                            </div>
+                            <div style="text-align: right;"><div class="cart-price-unified" id="s-cartRenew">--</div></div>
+                        </div>
+                        <div class="cart-item" style="background-color: #fafafa;">
+                            <div style="flex-grow:1;">
+                                <div style="font-weight: 700; font-size: 16px;">One-time Fee</div>
+                                <div class="fee-info-box">
+                                    This Premium Domain includes a one-time fee, which we'll bill separately. After the 1st year, you'll pay the renewal price shown in your cart. Premium domain fees are final and non-refundable.
+                                </div>
+                            </div>
+                            <div style="text-align: right;"><div class="cart-price-unified" id="s-cartOneTime">--</div></div>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 20px;">
+                            <span style="font-size: 18px; font-weight: 600;">Total</span>
+                            <span style="font-size: 24px; font-weight: 700;" id="s-cartTotal">--</span>
+                        </div>
+                        <button class="btn-checkout" onclick="alert('Proceeding...')">Continue</button>
+                        <a href="#" style="display:block; text-align:center; font-size:11px; margin-top:15px; color:#666;">Terms & Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="app-generic" class="hidden">
+        
+        <div id="g-view-home" class="hero-view">
+            <div class="container">
+                <p style="text-transform: uppercase; font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px;">Premium Domain Names</p>
+                <h1>Give your next big idea the perfect address</h1>
+                <div class="search-wrapper">
+                    <input type="text" id="g-searchInput" value="travel-deals" placeholder="Find your domain now">
+                    <button onclick="doSearchGeneric()">Check</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="g-view-results" class="results-section hidden">
+            <div class="container">
+                <div style="margin-bottom: 20px;">
+                    <a href="#" onclick="goHome()" style="color:#666; text-decoration:none; font-size:14px;">&larr; Start new search</a>
+                </div>
+
+                <div class="result-message"><span class="check-green">✔</span> Here are your top options for "travel-deals"</div>
+
+                <div class="grid-layout-2col">
+                    
+                    <div class="grid-card featured">
+                        <div style="display:flex; flex-direction:column; flex-grow:1;">
+                            <span class="badge-premium">PREMIUM REGISTRY DOMAIN</span>
+                            <div class="domain-name" style="margin-top:15px;">travel-deals.shop</div>
+                            <div class="tag-container">
+                                <span class="tag-pill" onclick="toggleTag(this, 'g-info1', 'Keyword matches high search volume.')">★ High Value</span>
+                                <span class="tag-pill" onclick="toggleTag(this, 'g-info1', 'Short extension.')">Short</span>
+                            </div>
+                            <div id="g-info1" class="tag-info-display"></div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-row">
+                                <div style="display:flex; align-items:center;">
+                                    <span class="price-label">One-time fee</span>
+                                    <span class="info-icon" data-tooltip="This Premium Domain includes a one-time fee, which we'll bill separately. After the 1st year, you'll pay the renewal price shown in your cart.">i</span> 
+                                </div>
+                                <span class="price-val">399 €</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Renewal</span>
+                                <span class="price-val" style="font-size:14px; color:#28a745;">12 € / year</span>
+                            </div>
+                            <div style="text-align:right; margin-top:15px;">
+                                <button id="g-btn1" class="btn-add" onclick="addToCartGeneric('travel-deals.shop', 399, 12, 'g-btn1', 'g-txt1', 'premium')">Add to cart</button>
+                                <div id="g-txt1" class="post-add-text">Immediate payment required.<br>Fee is non-refundable.</div>
+                            </div>
+                        </div>
+                        <details class="card-dropdown">
+                            <summary>More Information on Premium Domains</summary>
+                            <p>Immediate payment required. Availability not guaranteed until transfer is complete. Premium fees are final and non-refundable.</p>
+                        </details>
+                    </div>
+
+                    <div class="grid-card">
+                        <div style="display:flex; flex-direction:column; flex-grow:1;">
+                            <span class="badge-aftermarket">AFTERMARKET / RESALE</span>
+                            <div class="domain-name" style="margin-top:15px;">travel-deals.com</div>
+                            <div class="tag-container">
+                                <span class="tag-pill" onclick="toggleTag(this, 'g-info2', 'Older domains are trusted more.')">Trusted Legacy</span>
+                                <span class="tag-pill" onclick="toggleTag(this, 'g-info2', '.com holds value best.')">Investment</span>
+                            </div>
+                            <div id="g-info2" class="tag-info-display"></div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-row">
+                                <div style="display:flex; align-items:center;">
+                                    <span class="price-label">One-time fee</span>
+                                    <span class="info-icon" data-tooltip="This Premium Domain includes a one-time fee, which we'll bill separately. After the 1st year, you'll pay the renewal price shown in your cart.">i</span> 
+                                </div>
+                                <span class="price-val">5,000 €</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Renewal</span>
+                                <span class="price-val" style="font-size:14px; color:#666;">15 € / year</span>
+                            </div>
+                            <div style="text-align:right; margin-top:15px;">
+                                <button id="g-btn2" class="btn-add outline" onclick="addToCartGeneric('travel-deals.com', 5000, 15, 'g-btn2', 'g-txt2', 'aftermarket')">Add to cart</button>
+                                <div id="g-txt2" class="post-add-text">Immediate payment required.<br>Fee is non-refundable.</div>
+                            </div>
+                        </div>
+                        <details class="card-dropdown">
+                            <summary>More Information on Premium Domains</summary>
+                            <p>Immediate payment required. Availability not guaranteed until transfer is complete. Premium fees are final and non-refundable.</p>
+                        </details>
+                    </div>
+
+                </div>
+
+                <div class="rec-container">
+                    <h3>Other recommended domains</h3>
+                    <div class="rec-row">
+                        <div><strong>travel-deals.info</strong><span style="font-size:12px; color:#666; margin-left:10px;">Standard</span></div>
+                        <div style="display:flex; align-items:center;">
+                            <span style="font-weight:bold; margin-right:20px;">4 € / year</span>
+                            <button class="btn-add outline" style="padding:5px 15px; border-radius:20px; font-size:13px;">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="g-view-cart" class="hidden" style="padding:40px 0;">
+            <div class="container">
+                <h2 style="margin-bottom: 20px;">Your shopping cart</h2>
+                <div class="cart-grid">
+                    <div class="cart-box">
+                        <div class="cart-item">
+                            <div>
+                                <div style="font-weight: 700; font-size: 16px;">
+                                    <span id="g-cartName">--</span> 
+                                    <span id="g-cartBadge" class="cart-badge-blue">PREMIUM REGISTRY</span>
+                                </div>
+                                <div style="font-size: 12px; color: #666;">1 year registration</div>
+                            </div>
+                            <div style="text-align: right;"><div class="cart-price-unified" id="g-cartRenew">--</div></div>
+                        </div>
+                        <div class="cart-item" style="background-color: #fafafa;">
+                            <div style="flex-grow:1;">
+                                <div style="font-weight: 700; font-size: 16px;">One-time Fee</div>
+                                <div class="fee-info-box">
+                                    This Premium Domain includes a one-time fee, which we'll bill separately. After the 1st year, you'll pay the renewal price shown in your cart.Premium              domain fees are final and non-refundable.
+                                </div>
+                            </div>
+                            <div style="text-align: right;"><div class="cart-price-unified" id="g-cartOneTime">--</div></div>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 20px;">
+                            <span style="font-size: 18px; font-weight: 600;">Total</span>
+                            <span style="font-size: 24px; font-weight: 700;" id="g-cartTotal">--</span>
+                        </div>
+                        <button class="btn-checkout" onclick="alert('Proceeding...')">Continue</button>
+                        <a href="#" style="display:block; text-align:center; font-size:11px; margin-top:15px; color:#666;">Terms & Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- NAVIGATION STATE ---
+        function goHome() {
+            document.getElementById('view-landing').classList.remove('hidden');
+            document.getElementById('app-single').classList.add('hidden');
+            document.getElementById('app-generic').classList.add('hidden');
+        }
+
+        function startSingleApp() {
+            document.getElementById('view-landing').classList.add('hidden');
+            document.getElementById('app-single').classList.remove('hidden');
+            document.getElementById('s-view-home').classList.remove('hidden');
+            document.getElementById('s-view-results').classList.add('hidden');
+            document.getElementById('s-view-cart').classList.add('hidden');
+        }
+
+        function startGenericApp() {
+            document.getElementById('view-landing').classList.add('hidden');
+            document.getElementById('app-generic').classList.remove('hidden');
+            document.getElementById('g-view-home').classList.remove('hidden');
+            document.getElementById('g-view-results').classList.add('hidden');
+            document.getElementById('g-view-cart').classList.add('hidden');
+        }
+
+        // --- SHARED UI LOGIC ---
+        function toggleTag(element, contentId, text) {
+            var contentBox = document.getElementById(contentId);
+            if (element.classList.contains('active')) {
+                element.classList.remove('active'); contentBox.style.display = 'none';
+            } else {
+                var siblings = element.parentNode.children;
+                for (var i = 0; i < siblings.length; i++) siblings[i].classList.remove('active');
+                element.classList.add('active'); contentBox.innerText = text; contentBox.style.display = 'block';
+            }
+        }
+
+        // --- SINGLE SEARCH FUNCTIONS ---
+        function doSearchSingle() {
+            var val = document.getElementById('s-searchInput').value;
+            if(val) {
+                document.getElementById('s-resultName').innerText = val;
+                document.getElementById('s-cartName').innerText = val;
+            }
+            document.getElementById('s-view-home').classList.add('hidden');
+            document.getElementById('s-view-results').classList.remove('hidden');
+        }
+
+        function addToCartSingle(name, oneTime, renew, btnId, txtId, type) {
+            updateCartButton(btnId, txtId);
+            document.getElementById('s-cartName').innerText = name;
+            document.getElementById('s-cartOneTime').innerText = oneTime + " €";
+            document.getElementById('s-cartRenew').innerText = renew + " €";
+            document.getElementById('s-cartTotal').innerText = (oneTime + renew) + " €";
+            
+            // Set Badge Type logic just in case (though single view is mostly registry)
+            var badge = document.getElementById('s-cartBadge');
+            if (type === 'aftermarket') {
+                badge.className = 'cart-badge-yellow';
+                badge.innerText = 'AFTERMARKET / RESALE';
+            } else {
+                badge.className = 'cart-badge-blue';
+                badge.innerText = 'PREMIUM REGISTRY';
+            }
+
+            document.getElementById('master-cart-badge').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('s-view-results').classList.add('hidden');
+                document.getElementById('s-view-cart').classList.remove('hidden');
+                window.scrollTo(0,0);
+            }, 1500);
+        }
+
+        // --- GENERIC SEARCH FUNCTIONS ---
+        function doSearchGeneric() {
+            document.getElementById('g-view-home').classList.add('hidden');
+            document.getElementById('g-view-results').classList.remove('hidden');
+        }
+
+        function addToCartGeneric(name, oneTime, renew, btnId, txtId, type) {
+            updateCartButton(btnId, txtId);
+            document.getElementById('g-cartName').innerText = name;
+            document.getElementById('g-cartOneTime').innerText = oneTime + " €";
+            document.getElementById('g-cartRenew').innerText = renew + " €";
+            document.getElementById('g-cartTotal').innerText = (oneTime + renew) + " €";
+            
+            // DYNAMIC BADGE SWITCHER
+            var badge = document.getElementById('g-cartBadge');
+            if (type === 'aftermarket') {
+                badge.className = 'cart-badge-yellow';
+                badge.innerText = 'AFTERMARKET / RESALE';
+            } else {
+                badge.className = 'cart-badge-blue';
+                badge.innerText = 'PREMIUM';
+            }
+
+            document.getElementById('master-cart-badge').classList.remove('hidden');
+             setTimeout(() => {
+                document.getElementById('g-view-results').classList.add('hidden');
+                document.getElementById('g-view-cart').classList.remove('hidden');
+                window.scrollTo(0,0);
+            }, 1500);
+        }
+
+        // Helper to update button state
+        function updateCartButton(btnId, txtId) {
+            var btn = document.getElementById(btnId);
+            var txt = document.getElementById(txtId);
+            btn.innerText = "✓ In Cart";
+            btn.classList.add("added-state");
+            txt.style.display = "block";
+        }
+    </script>
+</body>
+</html>
